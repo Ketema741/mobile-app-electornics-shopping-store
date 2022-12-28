@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, Image } from "react-native";
 
-import { COLORS, SIZES, FONTS, SHADOWS } from "../constants";
+import { COLORS, SIZES, FONTS, SHADOWS } from "../../constants";
 
 
 export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
@@ -49,7 +49,32 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
           textAlign: "center",
         }}
       >
-        Place a bid
+        View
+      </Text>
+    </TouchableOpacity>
+  );
+};
+export const RectButton2 = ({ minWidth, fontSize, handlePress, ...props }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        backgroundColor: COLORS.primary,
+        padding: SIZES.small,
+        borderRadius: SIZES.extraLarge,
+        minWidth: minWidth,
+        ...props,
+      }}
+      onPress={handlePress}
+    >
+      <Text
+        style={{
+          fontFamily: FONTS.semiBold,
+          fontSize: fontSize,
+          color: COLORS.white,
+          textAlign: "center",
+        }}
+      >
+        Add To Cart
       </Text>
     </TouchableOpacity>
   );
