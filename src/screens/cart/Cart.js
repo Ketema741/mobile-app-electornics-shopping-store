@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, Text, TouchableOpacity, FlatList, ScrollView, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { COLORS } from "../../constants";
 import { NFTData } from '../../constants'
@@ -19,120 +20,24 @@ export default Cart = ({ navigation }) => {
   const checkOut = () => {
     console.log("I am waiting for jermai to impliment me")
   }
+
+  
   return (
     <View>
-      <ScrollView>
-        <View style={styles.orderDetailContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcons name="chevron-left" style={styles.iconLeft} />
-          </TouchableOpacity>
-          <Text style={styles.orderDetailText}>
-            Order Details
-          </Text>
-          <View></View>
-        </View>
-
-        <Text style={styles.orderCartText}>
-          My Cart
-        </Text>
-
         <View style={{ paddingHorizontal: 16 }}>
           {products ?
             <FlatList
+              ListHeaderComponent={<Header />}
               data={products}
               renderItem={({ item }) => <CartProduct product={item} />}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
+              ListFooterComponent={Footer}
             />
             : null
           }
         </View>
-
-        <View>
-          <View style={styles.deliveryLocationContainer}>
-            <Text style={styles.deliveryLocationText}>
-              Delivery Location
-            </Text>
-            <View style={styles.deliveryLocationDetailContainer}>
-
-              <View style={styles.deliveryLoctionDetail}>
-
-                <View style={styles.deliveryTruckIcon}>
-                  <MaterialCommunityIcons name="truck-delivery-outline" style={styles.truckDeliveryOutline} />
-                </View>
-
-                <View>
-                  <Text style={styles.deliveryAddressText1}>
-                    2 Petre Melikishvili St.
-                  </Text>
-                  <Text
-                    style={styles.deliveryAddressText2}>
-                    0162, Tbilisi
-                  </Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons name="chevron-right" style={styles.chevronRight} />
-            </View>
-          </View>
-
-          <View style={styles.paymentContainer}>
-            <Text style={styles.paymentMethodText}>
-              Payment Method
-            </Text>
-            <View style={styles.paymentMethodContainer}>
-              <View style={styles.paymentMethodDetail}>
-                <View style={styles.paymentMethodVisa}>
-                  <Text style={styles.paymentMethodVisaText1}>
-                    VISA
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.paymentMethodVisaText2}>
-                    Visa Classic
-                  </Text>
-                  <Text style={styles.paymentMethodVisaId}>
-                    ****-9092
-                  </Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons name="chevron-right" style={styles.chevronRight} />
-            </View>
-          </View>
-          <View style={styles.orderInfoContainer}>
-            <Text style={styles.orderInfoText}>
-              Order Info
-            </Text>
-            <View style={styles.orderSubTotalContainer}>
-              <Text style={styles.orderSubtotalText}>
-                Subtotal
-              </Text>
-              <Text style={styles.orderSubTotalValue}>
-                ETB 778.00
-              </Text>
-            </View>
-
-            <View
-              style={styles.orderShippingContainer}>
-              <Text style={styles.orderShippingText}>
-                Shipping Tax
-              </Text>
-              <Text style={styles.orderShippingValue}>
-               ETB 878
-              </Text>
-            </View>
-
-            <View style={styles.orderTotalContainer}>
-              <Text style={styles.orderTotalText}>
-                Total
-              </Text>
-              <Text style={styles.orderTotalValue}>
-                ETB 35
-              </Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-
+        
       <View style={styles.checkOutContainer}>
         <TouchableOpacity onPress={checkOut} style={styles.checkOut}>
           <Text style={styles.checkOutText}>
@@ -144,6 +49,117 @@ export default Cart = ({ navigation }) => {
   )
 }
 
+const Header = () => {
+  const navigation = useNavigation();
+
+  return (
+    <>
+      <View style={styles.orderDetailContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons name="chevron-left" style={styles.iconLeft} />
+        </TouchableOpacity>
+        <Text style={styles.orderDetailText}>
+          Order Details
+        </Text>
+        <View></View>
+      </View>
+
+      <Text style={styles.orderCartText}>
+        My Cart
+      </Text>
+    </>
+  )
+}
+
+
+const Footer = () => {
+  return (
+
+    <View>
+      <View style={styles.deliveryLocationContainer}>
+        <Text style={styles.deliveryLocationText}>
+          Delivery Location
+        </Text>
+        <View style={styles.deliveryLocationDetailContainer}>
+
+          <View style={styles.deliveryLoctionDetail}>
+
+            <View style={styles.deliveryTruckIcon}>
+              <MaterialCommunityIcons name="truck-delivery-outline" style={styles.truckDeliveryOutline} />
+            </View>
+
+            <View>
+              <Text style={styles.deliveryAddressText1}>
+                2 Petre Melikishvili St.
+              </Text>
+              <Text
+                style={styles.deliveryAddressText2}>
+                0162, Tbilisi
+              </Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name="chevron-right" style={styles.chevronRight} />
+        </View>
+      </View>
+
+      <View style={styles.paymentContainer}>
+        <Text style={styles.paymentMethodText}>
+          Payment Method
+        </Text>
+        <View style={styles.paymentMethodContainer}>
+          <View style={styles.paymentMethodDetail}>
+            <View style={styles.paymentMethodVisa}>
+              <Text style={styles.paymentMethodVisaText1}>
+                VISA
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.paymentMethodVisaText2}>
+                Visa Classic
+              </Text>
+              <Text style={styles.paymentMethodVisaId}>
+                ****-9092
+              </Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name="chevron-right" style={styles.chevronRight} />
+        </View>
+      </View>
+      <View style={styles.orderInfoContainer}>
+        <Text style={styles.orderInfoText}>
+          Order Info
+        </Text>
+        <View style={styles.orderSubTotalContainer}>
+          <Text style={styles.orderSubtotalText}>
+            Subtotal
+          </Text>
+          <Text style={styles.orderSubTotalValue}>
+            ETB 778.00
+          </Text>
+        </View>
+
+        <View
+          style={styles.orderShippingContainer}>
+          <Text style={styles.orderShippingText}>
+            Shipping Tax
+          </Text>
+          <Text style={styles.orderShippingValue}>
+            ETB 878
+          </Text>
+        </View>
+
+        <View style={styles.orderTotalContainer}>
+          <Text style={styles.orderTotalText}>
+            Total
+          </Text>
+          <Text style={styles.orderTotalValue}>
+            ETB 35
+          </Text>
+        </View>
+      </View>
+    </View>
+  )
+}
 
 // CSS STYLES
 const styles = StyleSheet.create({
@@ -362,7 +378,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  checkOutText:{
+  checkOutText: {
     fontSize: 12,
     fontWeight: '500',
     letterSpacing: 1,
