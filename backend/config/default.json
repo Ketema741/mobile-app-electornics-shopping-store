@@ -1,0 +1,7 @@
+{
+    "mongoURI":"mongodb+srv://ketema:KETEMAGIRMA1991@cluster0.cobpc6z.mongodb.net/?retryWrites=true&w=majority",
+    "jwtSecret":"secret",
+    "cloud_name": "ds373apvf", 
+    "api_key": "264383778163642", 
+    "api_secret": "uiFLKpMQN9DTO4D3cl7qaXqAGTU"
+}
