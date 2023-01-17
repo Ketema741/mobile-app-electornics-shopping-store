@@ -1,7 +1,7 @@
 export const COLORS = {
   primary: "#001F2D",
   secondary: "#4D626C",
-
+  delete: '#d11a2a',
   white: "#FFF",
   gray: "#74858C",
 };

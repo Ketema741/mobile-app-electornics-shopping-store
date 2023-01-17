@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+
+import ProductState from "./src/context/product/ProductState";
+import TabNavigator from './src/components/navigators/TabNavigator';
+import { StripeProvider, useStripe } from '@stripe/stripe-react-native';
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import { useState, useEffect } from "react";
 
-import Home from "./src/screens/Home";
-import Details from "./src/screens/Details";
-import ProductState from "./src/context/product/ProductState";
-// import AuthState from "./src/context/auth/AuthState";
-import Login from "./src/components/auth/Login";
-import Cart from "./src/screens/cart/Cart";
+// import { API_URL } from "./src/config/config";
+// import { Button, Alert, View } from 'react-native'
+import axios from "axios";
 
 const theme = {
   ...DefaultTheme,
@@ -17,9 +17,6 @@ const theme = {
     background: "transparent",
   },
 };
-
-const Stack = createStackNavigator();
-
 const App = () => {
   const [loaded] = useFonts({
     InterBold: require("./assets/fonts/Inter-Bold.ttf"),
@@ -29,31 +26,32 @@ const App = () => {
     InterLight: require("./assets/fonts/Inter-Light.ttf"),
   });
 
-  if (!loaded) return null;
+  const [publishableKey, setPublishableKey] = useState('')
+
+  useEffect(() => {
+    const getPublishabkeKey = async () => {
+      try {
+        const res = await axios.post('http://localhost:6000/api/payment/create-checkout-session')
+        const { publishableKey } = await res.data;
+
+        setPublishableKey(publishableKey)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getPublishabkeKey()
+    console.log(publishableKey)
+  }, [])
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName="Home"
-      >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Cart" component={Cart} />
-      </Stack.Navigator>
-    </NavigationContainer>  
+    <StripeProvider
+      publishableKey={publishableKey}
+    >
+      <NavigationContainer>
+        <ProductState>
+          <TabNavigator />
+        </ProductState>
+      </NavigationContainer>
+    </StripeProvider>
   );
 }
-
-
-export default () => {
-  return (
-    <ProductState theme={theme}>
-      {/* <AuthState> */}
-        <App />
-      {/* </AuthState> */}
-    </ProductState>
-  );
-};
+export default App

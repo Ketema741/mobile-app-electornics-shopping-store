@@ -1,43 +1,64 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity, FlatList, ScrollView, StyleSheet } from "react-native";
+import { Alert, View, Text, TouchableOpacity, FlatList, ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import axios from 'axios'
 import { COLORS } from "../../constants";
 import { NFTData } from '../../constants'
-
 import CartProduct from './CartProduct';
-
 import productContext from '../../context/product/productContext';
+
 
 export default Cart = ({ navigation }) => {
   const ProductContext = useContext(productContext)
   const { cart } = ProductContext
   const products = cart
 
+  // from Jeremy 
+  const [ready, setReady] = useState(false)
+  const [url, setUrl] = useState('')
 
-  // will be implimented by jermia
-  const checkOut = () => {
-    console.log("I am waiting for jermai to impliment me")
-  }
+  const checkOut = async () => {
+    const body = {
+      items: products
+    }
 
-  
+    try {
+      // console.log(JSON.stringify(body))
+      const res = await axios.post('http://localhost:6000/api/payment/create-checkout-session', body)
+      const result = await res.data;
+      setUrl(result.url)
+      if (!url) {
+        
+      }
+      return navigation.navigate('Payment', { url: url })
+    } catch (error) {
+      console.log("The Error", error)
+    }
+  };
+
+  useEffect(() => {
+    console.log(url)
+
+  }, [url])
+
+
   return (
     <View>
-        <View style={{ paddingHorizontal: 16 }}>
-          {products ?
-            <FlatList
-              ListHeaderComponent={<Header />}
-              data={products}
-              renderItem={({ item }) => <CartProduct product={item} />}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              ListFooterComponent={Footer}
-            />
-            : null
-          }
-        </View>
-        
+      <View style={{ paddingHorizontal: 16 }}>
+        {products ?
+          <FlatList
+            ListHeaderComponent={<Header />}
+            data={products}
+            renderItem={({ item }) => <CartProduct product={item} />}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={Footer}
+          />
+          : null
+        }
+      </View>
+
       <View style={styles.checkOutContainer}>
         <TouchableOpacity onPress={checkOut} style={styles.checkOut}>
           <Text style={styles.checkOutText}>

@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text, Image } from "react-native";
 
 import { COLORS, SIZES, FONTS, SHADOWS } from "../../constants";
-
+import { Feather } from '@expo/vector-icons';
 
 export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
   return (
@@ -28,7 +28,53 @@ export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
     </TouchableOpacity>
   );
 };
+export const EditButton = ({ imgUrl, handlePress, ...props }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        width: 40,
+        height: 40,
+        backgroundColor: COLORS.white,
+        position: "absolute",
+        borderRadius: SIZES.extraLarge,
+        alignItems: "center",
+        justifyContent: "center",
+        ...SHADOWS.light,
+        ...props,
+      }}
+      onPress={handlePress}
+    >
 
+      <Feather name="edit" size={24} color="black"  width= {24} height= {24}  />
+    </TouchableOpacity>
+  );
+};
+
+export const DeleteButton = ({ minWidth, fontSize, handlePress, ...props }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        backgroundColor: COLORS.delete,
+        padding: SIZES.small,
+        borderRadius: SIZES.extraLarge,
+        minWidth: minWidth,
+        ...props,
+      }}
+      onPress={handlePress}
+    >
+      <Text
+        style={{
+          fontFamily: FONTS.semiBold,
+          fontSize: fontSize,
+          color: COLORS.white,
+          textAlign: "center",
+        }}
+      >
+        Delete
+      </Text>
+    </TouchableOpacity>
+  );
+};
 export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
   return (
     <TouchableOpacity

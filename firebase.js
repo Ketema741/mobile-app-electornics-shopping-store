@@ -1,6 +1,11 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,8 +19,15 @@ const firebaseConfig = {
   appId: "1:285900612663:web:e313f97fc0650fb2260bb2"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
 
-const auth = getAuth()
-export {auth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
+}
+
+export { firebase, getDownloadURL, getStorage, ref }
+
+
+
+
+
+
