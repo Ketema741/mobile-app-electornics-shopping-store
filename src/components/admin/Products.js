@@ -4,7 +4,7 @@ import { View, SafeAreaView, FlatList } from "react-native";
 import FocusedStatusBar from '../layouts/FocusedStatusBar'
 import { COLORS } from "../../constants";
 
-import HomeHeader from "../layouts/HomeHeader";
+import AdminHeader from "../layouts/AdminHeader";
 import ProductItem from "./ProductItem";
 
 import productContext from "../../context/product/productContext";
@@ -43,7 +43,7 @@ const Products = () => {
             renderItem={({ item }) => <ProductItem data={item} />}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
+            ListHeaderComponent={<AdminHeader onSearch={handleSearch} />}
           />
         </View>
 

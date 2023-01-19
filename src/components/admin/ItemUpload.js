@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import HomeHeader from '../../components/layouts/HomeHeader';
+import HomeHeader from '../layouts/HomeHeader';
 
 import { firebase, getDownloadURL, getStorage, ref } from '../../../firebase';
 import { COLORS, SIZES } from '../../constants';
@@ -31,7 +31,7 @@ export default ItemUpload = () => {
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
+            allowsEditing: false,
             aspect: [4, 2],
             quality: 1
         });
@@ -88,7 +88,6 @@ export default ItemUpload = () => {
                 onSubmit={(values) => {
                     // handle item upload here
                 }}
-                
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                     <View style={styles.formContainer}>
@@ -106,7 +105,7 @@ export default ItemUpload = () => {
                                     top: -200,
                                 }} />
                             </TouchableOpacity>
-                            <Text>Upload Item</Text>
+                            <Text style={styles.uploadHeader}>Upload Item</Text>
                         </View>
                         <View style={styles.input}>
                             <Text>Name:</Text>
@@ -115,7 +114,7 @@ export default ItemUpload = () => {
                                 onBlur={handleBlur('name')}
                                 value={values.name}
                             />
-                            <Text>{errors.name}</Text>
+                            <Text style={styles.errorText}>{errors.name}</Text>
                         </View>
                         <View style={styles.input}>
                             <Text>Description:</Text>
@@ -124,7 +123,7 @@ export default ItemUpload = () => {
                                 onBlur={handleBlur('description')}
                                 value={values.description}
                             />
-                            <Text>{errors.description}</Text>
+                            <Text style={styles.errorText}>{errors.description}</Text>
                         </View>
                         <View style={styles.input}>
                             <Text>Price:</Text>
@@ -134,18 +133,18 @@ export default ItemUpload = () => {
                                 value={values.price}
                                 keyboardType="numeric"
                             />
-                            <Text>{errors.price}</Text>
+                            <Text style={styles.errorText} >{errors.price}</Text>
                         </View>
 
                         <View style={styles.input}>
-                            <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
+                            <View style={styles.pickImage}>
                                 <Button title="Pick an image" onPress={pickImage} />
-                                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                                {image && <Image source={{ uri: image }} style={{ width: 305, height: 400, resizeMode: 'contain' }} />}
                                 {url && <Image source={{ uri: url }} style={{ width: 200, height: 200 }} />}
                             </View>
                         </View>
                         <View style={styles.button}>
-                            <TouchableOpacity onPress={uploadImage}>
+                            <TouchableOpacity onPress={handleSubmit}>
                                 <Text style={styles.buttonText}>Upload</Text>
                             </TouchableOpacity>
                         </View>
@@ -161,11 +160,10 @@ export default ItemUpload = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 25,
     },
     formContainer: {
         marginTop: 25,
-        paddingLeft:15,
+        paddingLeft: 15,
         width: '95%',
     },
     input: {
@@ -174,6 +172,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 5,
+    },
+    errorText: {
+        color: 'red',
+    },
+    uploadHeader: {
+        color: COLORS.primary,
+        fontWeight: 'bold',
+        fontSize: 20,
+
     },
     button: {
         backgroundColor: COLORS.primary,
@@ -187,6 +194,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
+    },
+    pickImage: {
+        flex: 1,
+        marginTop: 10,
+        titleBackgroundColor: COLORS.primary,
     },
 });
 

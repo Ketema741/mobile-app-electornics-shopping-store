@@ -28,17 +28,7 @@ const HomeHeader = ({ onSearch }) => {
           resizeMode="contain"
           style={{ width: 90, height: 25 }}
         />
-        <TouchableOpacity onPress={() => navigation.navigate("Cart", { user })}>
-          <View style={{ width: 45, height: 45 }} >
-            <EvilIcons name ='cart' style={{ 
-              width: "100%", 
-              height: "100%",
-              fontSize: 55,
-              color:COLORS.white 
-            }} />
-
-          </View>
-        </TouchableOpacity>
+        
 
         <TouchableOpacity onPress={() => navigation.navigate("Login", { user })}>
           <View style={{ width: 45, height: 45 }} >
@@ -70,7 +60,7 @@ const HomeHeader = ({ onSearch }) => {
             color: COLORS.white,
           }}
         >
-          Hello ohana 👋
+          TechTronix 👋
         </Text>
 
         <Text
@@ -81,7 +71,7 @@ const HomeHeader = ({ onSearch }) => {
             marginTop: SIZES.base / 2,
           }}
         >
-          Let’s find masterpiece Art
+          Electronics for every budget
         </Text>
       </View>
 

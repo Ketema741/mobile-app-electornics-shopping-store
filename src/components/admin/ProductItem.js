@@ -39,7 +39,7 @@ const ProductItem = ({ data }) => {
           }}
         />
       </View>
-      <EditButton imgUrl={assets.heart} right={10} top={10} />
+      <EditButton  handlePress={() => navigation.navigate("ItemUpload", { data })} imgUrl={assets.heart} right={10} top={10} />
 
       <SubInfo />
       <View style={{ width: "100%", padding: SIZES.font }}>

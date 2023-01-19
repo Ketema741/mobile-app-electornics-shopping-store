@@ -1,13 +1,14 @@
-
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import Home from '../../screens/Home';
+import { MaterialIcons } from '@expo/vector-icons';
 
+import Home from '../../screens/Home';
 import StackNavigator from './StackNavigator';
+import UserProfile from '../../screens/profile/UserProfile';
+import Admin from '../../screens/admin/Admin'
+
 
 const TabNavigator = () => {
     const screenOptions = {
@@ -28,16 +29,7 @@ const TabNavigator = () => {
                         ),
                     }}
                 />
-                <Tab.Screen
-                    name="Search"
-                    component={Home}
-                    options={{
-                        tabBarLabel: 'Search',
-                        tabBarIcon: ({ color, size }) => (
-                            <Feather name="search" size={24} color="black" />
-                        ),
-                    }}
-                />
+                
                 <Tab.Screen
                     name="Cart"
                     component={Cart}
@@ -50,13 +42,23 @@ const TabNavigator = () => {
                 />
                 <Tab.Screen
                     name="Profile"
-                    component={Cart}
+                    component={UserProfile}
                     options={{
                         tabBarLabel: 'Profile',
                         tabBarIcon: ({ color, size }) => (
-                            <Feather
-                                name="user"
-                                size={24} color="black" />
+                            <Feather name="user" size={24} color="black" />
+                            
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Admin"
+                    component={Admin}
+                    options={{
+                        tabBarLabel: 'Admin',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialIcons name="admin-panel-settings" size={24} color="black" />
+
                         ),
                     }}
                 />

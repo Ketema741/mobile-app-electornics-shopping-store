@@ -1,23 +1,19 @@
-
 import { createStackNavigator } from "@react-navigation/stack";
 
-
 import Details from "../../screens/Details";
-import ItemUpload from "../../screens/admin/ItemUpload";
-import addminProduct from '../admin/Products'
+import ItemUpload from "../admin/ItemUpload";
 
 import Home from "../../screens/Home";
 import Cart from '../../screens/cart/Cart'
 import PaymentSheet from "../../screens/cart/PaymentSheet";
-import AddProduct from '../../screens/admin/AddProduct';
 import Login from '../auth/Login';
-import Products from './../products/Products';
+import Admin from "../../screens/admin/Admin";
+import UserProfile from "../../screens/profile/UserProfile";
+
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
-
-
     return (
         <Stack.Navigator
             screenOptions={{
@@ -31,9 +27,9 @@ const StackNavigator = () => {
             <Stack.Screen name="Payment" component={PaymentSheet} />
 
             <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="ItemUpload" component={ItemUpload} />
-            <Stack.Screen name="addminProduct" component={addminProduct} />
+            <Stack.Screen name="Admin" component={Admin} />
+            <Stack.Screen name="UserProfile" component={UserProfile} />
         </Stack.Navigator>
     );
 }

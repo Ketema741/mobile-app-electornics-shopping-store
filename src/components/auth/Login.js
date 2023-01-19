@@ -5,7 +5,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../../firebase"
 
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import { COLORS } from '../../constants';
+import LoginHeader from '../layouts/LoginHeader';
 
 
 const Login = () => {
@@ -45,63 +49,96 @@ const Login = () => {
 
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-    >
+
+    <KeyboardAvoidingView style={styles.container} >
+      <LoginHeader />
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="chevron-left" style={{
           fontSize: 20,
           color: COLORS.black,
-          padding: 12,
+          padding: 14,
           marginTop: 5,
           backgroundColor: COLORS.white,
-          borderRadius: 12,
-          position:'absolute',
-          left: -200,
-          top: -200,
+          borderRadius: 50,
+          position: 'absolute',
+          left: -160,
+          top: -190,
         }} />
       </TouchableOpacity>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={yup.object().shape({
+          email: yup.string()
+            .email('Invalid email address')
+            .required('Email is required'),
+          password: yup.string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Password is required'),
+        })}
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+        onSubmit={(values) => {
+          // handle item upload here
+        }}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          <>
+            <View style={styles.inputContainer}>
+              <Text style={styles.loginHeader}>
+                Login To TechTronix
+              </Text>
+              <TextInput
+                placeholder="Email"
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
+                style={styles.input}
+              />
+              <Text style={styles.errorText} >{errors.email}</Text>
+              <TextInput
+                placeholder="Password"
+                style={styles.input}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+                secureTextEntry
+              />
+              <Text style={styles.errorText}>{errors.password}</Text>
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                style={[styles.button, styles.buttonOutline]}
+              >
+                <Text style={styles.buttonOutlineText}>Register</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+      </Formik>
+    </KeyboardAvoidingView >
   )
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   inputContainer: {
-    width: '80%'
+    width: '80%',
+    marginLeft: 30,
+    marginTop: 50,
+  },
+  loginHeader: {
+    color: COLORS.primary,
+    fontWeight: '700',
+    fontSize: 18,
+    margin: 20,
   },
   input: {
     backgroundColor: 'white',
@@ -110,14 +147,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
   },
+  errorText: {
+    color: 'red',
+  },
   buttonContainer: {
     width: '60%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 60,
     marginTop: 40,
+    justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: COLORS.primary,
     width: '100%',
     padding: 15,
     borderRadius: 10,
@@ -126,7 +166,7 @@ const styles = StyleSheet.create({
   buttonOutline: {
     backgroundColor: 'white',
     marginTop: 5,
-    borderColor: '#0782F9',
+    borderColor: COLORS.primary,
     borderWidth: 2,
   },
   buttonText: {
@@ -135,7 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: COLORS.primary,
     fontWeight: '700',
     fontSize: 16,
   },
