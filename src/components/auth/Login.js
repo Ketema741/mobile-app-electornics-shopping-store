@@ -1,51 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../../firebase"
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import { COLORS } from '../../constants';
 import LoginHeader from '../layouts/LoginHeader';
+import AuthContext from '../../context/auth/authContext';
 
 
 const Login = () => {
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+
+  const authContext = useContext(AuthContext)
+  const { isUserAuthenticated, userLogin } = authContext
 
   const navigation = useNavigation()
 
   useEffect(() => {
-    //   const unsubscribe = auth.onAuthStateChanged(user => {
     if (isUserAuthenticated) {
-      navigation.replace("Home")
+      navigation.goBack()
     }
-    // })
-    //   return unsubscribe
+    
   }, [isUserAuthenticated])
-
-  const handleSignUp = async () => {
-    try {
-      const res = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(res)
-    } catch (error) {
-      alert(error.message)
-    }
-  }
-
-  const handleLogin = async () => {
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log('loged in successfully!!');
-      setIsUserAuthenticated(true)
-    } catch (error) {
-      alert(error.message)
-    }
-  }
 
 
   return (
@@ -56,13 +35,13 @@ const Login = () => {
         <MaterialCommunityIcons name="chevron-left" style={{
           fontSize: 20,
           color: COLORS.black,
-          padding: 14,
+          padding: 12,
           marginTop: 5,
           backgroundColor: COLORS.white,
           borderRadius: 50,
           position: 'absolute',
-          left: -160,
-          top: -190,
+          left: 30,
+          top: -150,
         }} />
       </TouchableOpacity>
       <Formik
@@ -77,7 +56,7 @@ const Login = () => {
         })}
 
         onSubmit={(values) => {
-          // handle item upload here
+          userLogin(values)
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
@@ -113,7 +92,7 @@ const Login = () => {
                 <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={handleSubmit}
+                onPress={()=>navigation.navigate('Register')}
                 style={[styles.button, styles.buttonOutline]}
               >
                 <Text style={styles.buttonOutlineText}>Register</Text>

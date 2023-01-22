@@ -21,7 +21,7 @@ const DetailsDesc = ({ data }) => {
       >
         <NFTTitle
           title={data.name}
-          subTitle={data.creator}
+          subTitle={data.title}
           titleSize={SIZES.extraLarge}
           subTitleSize={SIZES.font}
         />

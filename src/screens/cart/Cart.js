@@ -25,20 +25,21 @@ export default Cart = ({ navigation }) => {
 
     try {
       // console.log(JSON.stringify(body))
-      const res = await axios.post('http://localhost:6000/api/payment/create-checkout-session', body)
+      const res = await axios.post('http://10.4.104.149:4420/api/payment/create-checkout-session', body)
       const result = await res.data;
       setUrl(result.url)
-      if (!url) {
-        
+      if (url) {
+        return navigation.navigate('Payment', { url: url })
+      }else{
+        console.log("loading....")
       }
-      return navigation.navigate('Payment', { url: url })
     } catch (error) {
       console.log("The Error", error)
     }
   };
 
   useEffect(() => {
-    console.log(url)
+    // console.log(url)
 
   }, [url])
 

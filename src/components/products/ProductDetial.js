@@ -1,9 +1,22 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { COLORS, SIZES, FONTS } from '../../constants'
 import { EthPrice } from '../productDetail/SubInfo'
 
-const ProductDetial = ({ product }) => {
+import ProductContext from "../../context/product/productContext";
+
+const ProductDetial = () => {
+  const productContext = useContext(ProductContext)
+  const { item } = productContext
+
+  const [imageUrl, setImageUrl] = useState(null);
+
+
+  useEffect(() => {
+    if(item) setImageUrl(item.url);
+  }, [item]);
+
+
   return (
     <View
       style={{
@@ -14,13 +27,19 @@ const ProductDetial = ({ product }) => {
         marginVertical: SIZES.base,
         paddingHorizontal: SIZES.base,
       }}
-      key={product.id}
+      key={item._id}
     >
       <Image
-        source={product.image}
+        source={{ uri: item.url }}
         resizeMode="contain"
         style={{ width: 48, height: 48 }}
       />
+      {imageUrl &&
+        <Image
+          source={{ uri: imageUrl }}
+          resizeMode="contain"
+          style={{ width: 48, height: 48 }}
+        />}
 
       <View
         style={{
@@ -36,7 +55,7 @@ const ProductDetial = ({ product }) => {
             color: COLORS.primary,
           }}
         >
-          product placed by {product.name}
+          Item  {item.name}
         </Text>
         <Text
           style={{
@@ -46,11 +65,11 @@ const ProductDetial = ({ product }) => {
             marginTop: 3,
           }}
         >
-          {product.date}
+          {item.date}
         </Text>
       </View>
 
-      <EthPrice price={product.price} />
+      <EthPrice price={item.price} />
     </View>
   )
 }

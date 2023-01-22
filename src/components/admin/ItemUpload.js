@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Image, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,20 +6,39 @@ import * as ImagePicker from 'expo-image-picker'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { firebase, getDownloadURL, getStorage, ref } from '../../../firebase';
+
 
 import HomeHeader from '../layouts/HomeHeader';
-
-import { firebase, getDownloadURL, getStorage, ref } from '../../../firebase';
 import { COLORS, SIZES } from '../../constants';
+import productContext from './../../context/product/productContext';
 
-export default ItemUpload = () => {
+
+export default ItemUpload = ({ route }) => {
+    const initialState = {
+        name: '',
+        title: '',
+        description: '',
+        prince: '',
+    }
     const navigation = useNavigation()
-    const [title, setTitle] = useState('')
-    const [price, setPrice] = useState('')
+    const [itemData, setItem] = useState(initialState)
+
+
+
+
+    useEffect(() => {
+        route.params.data ? setItem(route.params.data) : {};
+        console.log(itemData.name)
+        // console.log(route.params.data.name)
+    }, [route.params.data])
+
+    const ProductContext = useContext(productContext)
+    const { uploadItem } = ProductContext
+
     const [hasGalleryPermission, setGalleryPermission] = useState(null)
     const [image, setImage] = useState(null)
     const [uploading, setUploading] = useState(false)
-    const [url, setUrl] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -37,7 +56,6 @@ export default ItemUpload = () => {
         });
 
         console.log(result);
-
         if (!result.canceled) {
             setImage(result.assets[0].uri);
         }
@@ -45,48 +63,47 @@ export default ItemUpload = () => {
         if (hasGalleryPermission === false) {
             return <Text>No access to internal storage!</Text>
         }
+    } 
 
-    }
-
-    const uploadImage = async () => {
-        setUploading(true);
-        const response = await fetch(image)
-        const blob = await response.blob();
-        const filename = image.substring(image.lastIndexOf('/') + 1);
-        var uploadTask = firebase.storage().ref().child(filename).put(blob);
-        const storage = getStorage()
-        const reference = ref(storage, filename);
-        try {
-            await uploadTask;
-            await getDownloadURL(reference, uploadTask).then((url) => {
-                setUrl(url)
-            });
-        } catch (e) {
-            console.log(e)
-        }
-
-        setUploading(false);
-        Alert.alert("photo uploaded successfully!!")
-    }
 
     return (
-
-
         <KeyboardAwareScrollView style={styles.container}>
             <HomeHeader />
 
             <Formik
-                initialValues={{ name: '', description: '', price: '' }}
+                initialValues={{ name: itemData.name, title: itemData.title, description: itemData.description, price: itemData.price }}
                 validationSchema={yup.object().shape({
                     name: yup.string().required('Item name is required'),
+                    title: yup.string().required('Item title is required'),
                     description: yup.string().required('Item description is required'),
                     price: yup
                         .number()
                         .required('Item price is required')
                         .positive('Price must be a positive number'),
                 })}
-                onSubmit={(values) => {
-                    // handle item upload here
+                onSubmit={async (values) => {
+                    setUploading(true);
+                    const response = await fetch(image)
+                    const blob = await response.blob();
+                    const filename = image.substring(image.lastIndexOf('/') + 1);
+                    var uploadTask = firebase.storage().ref().child(filename).put(blob);
+                    const storage = getStorage()
+                    const reference = ref(storage, filename);
+
+                    let data = values
+
+                    try {
+                        await uploadTask;
+                        await getDownloadURL(reference, uploadTask)
+                            .then(async (url) => {
+                                data.url = url;
+                                uploadItem(data)
+
+                            });
+
+                    } catch (error) {
+                        console.log(error.message)
+                    }
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
@@ -117,6 +134,15 @@ export default ItemUpload = () => {
                             <Text style={styles.errorText}>{errors.name}</Text>
                         </View>
                         <View style={styles.input}>
+                            <Text>Title:</Text>
+                            <TextInput
+                                onChangeText={handleChange('title')}
+                                onBlur={handleBlur('title')}
+                                value={values.title}
+                            />
+                            <Text style={styles.errorText}>{errors.title}</Text>
+                        </View>
+                        <View style={styles.input}>
                             <Text>Description:</Text>
                             <TextInput
                                 onChangeText={handleChange('description')}
@@ -140,7 +166,6 @@ export default ItemUpload = () => {
                             <View style={styles.pickImage}>
                                 <Button title="Pick an image" onPress={pickImage} />
                                 {image && <Image source={{ uri: image }} style={{ width: 305, height: 400, resizeMode: 'contain' }} />}
-                                {url && <Image source={{ uri: url }} style={{ width: 200, height: 200 }} />}
                             </View>
                         </View>
                         <View style={styles.button}>

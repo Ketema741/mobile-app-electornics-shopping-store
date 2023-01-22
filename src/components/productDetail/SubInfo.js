@@ -49,7 +49,7 @@ export const EthPrice = ({ price }) => {
 const ImageCmp = ({ imgUrl, index }) => {
   return (
     <Image
-      source={imgUrl}
+      source={{urit:imgUrl}}
       resizeMode="contain"
       style={{
         width: 48,

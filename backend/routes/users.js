@@ -52,10 +52,7 @@ router.post(
     check("email", "please include a valid email!").isEmail(),
     check("password", "please enter a password with 6 or more characters")
       .isLength({ min: 6 }),
-    check("phone", "please add phone and phone can not be greater than 10 diigit")
-      .not()
-      .isEmpty()
-      .isLength({ min: 10 }),
+    check("address", "please add adress").not().isEmpty()
 
   ],
   async (req, res) => {
@@ -68,7 +65,7 @@ router.post(
       name,
       email,
       password,
-      phone,
+      address,
     } = req.body;
 
     try {
@@ -82,7 +79,7 @@ router.post(
         name,
         email,
         password,
-        phone,
+        address,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -125,7 +122,7 @@ router.put("/:id", auth, async (req, res) => {
     name,
     email,
     password,
-    phone,
+    address,
   } = req.body;
 
   // Build user object
@@ -133,8 +130,8 @@ router.put("/:id", auth, async (req, res) => {
   if (name) userFields.name = name;
   if (email) userFields.email = email;
   if (password) userFields.password = password;
-  if (phone) userFields.phone = phone;
- 
+  if (address) userFields.address = address;
+
 
   try {
     let user = await User.findById(req.params.id);
@@ -146,7 +143,7 @@ router.put("/:id", auth, async (req, res) => {
       { $set: userFields },
       { new: true }
     );
- 
+
     res.json(user);
   } catch (err) {
     console.error(err.message);

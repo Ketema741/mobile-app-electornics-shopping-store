@@ -7,11 +7,14 @@ import { COLORS, SIZES, SHADOWS, assets } from '../../constants';
 import { SubInfo, EthPrice, NFTTitle } from '../productDetail/SubInfo';
 
 
-const ProductItem = ({ data }) => {
+const ProductItem = ({ data, handleDelete }) => {
+  
   const navigation = useNavigation();
   const removeItem = () => {
-    // remove item
+    handleDelete(data.id)
+    console.log('remove');
   } 
+ 
   return (
     <View
       style={{
@@ -45,7 +48,7 @@ const ProductItem = ({ data }) => {
       <View style={{ width: "100%", padding: SIZES.font }}>
         <NFTTitle
           title={data.name}
-          subTitle={data.creator}
+          subTitle={data.title}
           titleSize={SIZES.large}
           subTitleSize={SIZES.small}
         />
@@ -62,7 +65,7 @@ const ProductItem = ({ data }) => {
         <DeleteButton
           minWidth={120}
           fontSize={SIZES.font}
-          handlePress={removeItem()}
+          handlePress={() => removeItem()}
         />
       </View>
     </View>

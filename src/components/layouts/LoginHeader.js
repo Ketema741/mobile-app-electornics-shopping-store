@@ -12,20 +12,24 @@ const LoginHeader = ({ onSearch }) => {
         <View
             style={{
                 backgroundColor: COLORS.primary,
-                padding: SIZES.font,
+                padding: 30,
             }}
         >
             <View
                 style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     alignItems: "center",
                 }}
             >
                 <Image
                     source={assets.logo}
                     resizeMode="contain"
-                    style={{ width: 90, height: 25 }}
+                    style={{ 
+                        width: 90, 
+                        height: 25,
+                        
+                    }}
                 />
 
 

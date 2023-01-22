@@ -1,15 +1,25 @@
 import { View, Image } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigation } from "@react-navigation/native";
 
 import { CircleButton, RectButton } from '../layouts/Button';
 import { COLORS, SIZES, SHADOWS, assets } from '../../constants';
 import { SubInfo, EthPrice, NFTTitle } from '../productDetail/SubInfo';
+import ProductContext from './../../context/product/productContext';
 
 
 const ProductItem = ({ data }) => {
   const navigation = useNavigation();
 
+  const productContext =useContext(ProductContext)
+  const { item, getItem } = productContext;
+
+  const handlePress = () => {
+    getItem(data._id)
+    
+    navigation.navigate("Details")
+
+  }
   return (
     <View
       style={{
@@ -27,8 +37,8 @@ const ProductItem = ({ data }) => {
         }}
       >
         <Image
-          source={data.image}
-          resizeMode="cover"
+          source={{ uri: data.url }}
+          resizeMode="contain"
           style={{
             width: "100%",
             height: "100%",
@@ -43,7 +53,7 @@ const ProductItem = ({ data }) => {
       <View style={{ width: "100%", padding: SIZES.font }}>
         <NFTTitle
           title={data.name}
-          subTitle={data.creator}
+          subTitle={data.title}
           titleSize={SIZES.large}
           subTitleSize={SIZES.small}
         />
@@ -60,7 +70,7 @@ const ProductItem = ({ data }) => {
         <RectButton
           minWidth={120}
           fontSize={SIZES.font}
-          handlePress={() => navigation.navigate("Details", { data })}
+          handlePress={() => handlePress()}
         />
       </View>
     </View>

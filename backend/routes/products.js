@@ -57,7 +57,6 @@ router.get("/:id", async (req, res) => {
 // @access    Private
 router.post(
   "/",
-  check("title", "title is required").not().isEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -70,7 +69,7 @@ router.post(
       price,
       description,
       relatedProduct,
-      productImages,
+      url,
     } = req.body;
 
     try {
@@ -80,7 +79,7 @@ router.post(
         price,
         description,
         relatedProduct,
-        productImages,
+        url,
       });
       const product = await newProduct.save();
       res.json(newProduct);

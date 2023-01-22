@@ -12,26 +12,29 @@ import productContext from "../../context/product/productContext";
 
 const Products = () => {
   const ProductContext = useContext(productContext)
-  const { products } = ProductContext;
+  const { items } = ProductContext;
 
-  const [nftData, setNftData] = useState(products);
+  const [itemData, setData] = useState(items);
 
   const handleSearch = (value) => {
     if (value.length === 0) {
-      setNftData(products);
+      setData(items);
     }
 
-    const filteredData = products.filter((item) =>
+    const filteredData = items.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())
     );
 
     if (filteredData.length === 0) {
-      setNftData(products);
+      setData(items);
     } else {
-      setNftData(filteredData);
+      setData(filteredData);
     }
   };
 
+  const handleDelete = (id) => {
+    setData(items.filter(item => item.id !== id))
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -39,8 +42,8 @@ const Products = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={nftData}
-            renderItem={({ item }) => <ProductItem data={item} />}
+            data={itemData}
+            renderItem={({ item }) => <ProductItem handleDelete={handleDelete} data={item} />}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<AdminHeader onSearch={handleSearch} />}

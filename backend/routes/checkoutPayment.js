@@ -1,12 +1,15 @@
 require("dotenv").config()
 const express = require("express");
 const mongoose = require('mongoose');
-const { Products } = require("stripe/lib/resources");
 const router = express.Router()
 const stripe = require("stripe")(process.env.SECRET_KEY)
 const Product = require('../models/Product');
 
-
+router.post("/checkout/session", async (req, res) => {
+    return res.json({
+        publishableKey: process.env.PUBLISHABLE_KEY,
+    })
+})
 router.post("/create-checkout-session", async (req, res) => {
 
     try {
@@ -34,16 +37,14 @@ router.post("/create-checkout-session", async (req, res) => {
         })
 
         return res.json({
-            publishableKey: process.env.PUBLISHABLE_KEY,
             url: session.url
         });
 
     } catch (error) {
-        res.status(500).json({ error: error.message })
-        console.log(error)
+        res.status(500).json({ error: error })
     }
 
 });
 
 
-module.exports = router;
+module.exports = router; 

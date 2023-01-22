@@ -7,6 +7,7 @@ import Home from "../../screens/Home";
 import Cart from '../../screens/cart/Cart'
 import PaymentSheet from "../../screens/cart/PaymentSheet";
 import Login from '../auth/Login';
+import Register from '../auth/Register';
 import Admin from "../../screens/admin/Admin";
 import UserProfile from "../../screens/profile/UserProfile";
 
@@ -27,6 +28,7 @@ const StackNavigator = () => {
             <Stack.Screen name="Payment" component={PaymentSheet} />
 
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ItemUpload" component={ItemUpload} />
             <Stack.Screen name="Admin" component={Admin} />
             <Stack.Screen name="UserProfile" component={UserProfile} />

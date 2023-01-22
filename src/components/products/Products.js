@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, SafeAreaView, FlatList } from "react-native";
 
 import FocusedStatusBar from '../layouts/FocusedStatusBar'
@@ -8,25 +8,30 @@ import HomeHeader from "../layouts/HomeHeader";
 import ProductItem from "./ProductItem";
 
 import productContext from "../../context/product/productContext";
+import { NFTData } from '../../constants'
 
 
 const Products = () => {
   const ProductContext = useContext(productContext)
-  const { products } = ProductContext;
+  const { items, getItems } = ProductContext;
 
-  const [nftData, setNftData] = useState(products);
+  useEffect(()=>{
+    getItems() 
+  },[])
+
+  const [nftData, setNftData] = useState(NFTData);
 
   const handleSearch = (value) => {
     if (value.length === 0) {
-      setNftData(products);
+      setNftData(items);
     }
 
-    const filteredData = products.filter((item) =>
+    const filteredData = items.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())
     );
 
     if (filteredData.length === 0) {
-      setNftData(products);
+      setNftData(items);
     } else {
       setNftData(filteredData);
     }
@@ -39,9 +44,9 @@ const Products = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={nftData}
+            data={items}
             renderItem={({ item }) => <ProductItem data={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
           />

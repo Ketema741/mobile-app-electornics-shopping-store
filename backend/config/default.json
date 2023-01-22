@@ -1,5 +1,5 @@
 {
-    "mongoURI":"mongodb+srv://ketema:KETEMAGIRMA1991@cluster0.cobpc6z.mongodb.net/?retryWrites=true&w=majority",
+    "mongoURI":"mongodb+srv://ketema:KETEMAGIRMA1991@cluster0.cobpc6z.mongodb.net/Electronics?retryWrites=true&w=majority",
     "jwtSecret":"secret",
     "cloud_name": "ds373apvf", 
     "api_key": "264383778163642", 

@@ -7,22 +7,22 @@ const ContactSchema = new Schema({
 		ref: 'admin'
 	},
 
-	
 	name: {
 		type: String,
 		required: true
 	},
 	title: {
 		type: String,
-		required: true
+		// required: true
 	},
 	description: {
 		type: String,
 		required: true
 
 	},
-	productImages: {
-		type: [Object],
+	url: {
+		type: String,
+		required: true
 	},
 
 	price: {
@@ -30,10 +30,6 @@ const ContactSchema = new Schema({
 		required: true
 	},
 
-	relatedProduct: {
-		type: [Object],
-
-	},
 	date: {
 		type: Date,
 		default: Date.now

@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../../context/auth/authContext";
 
 import { EvilIcons } from '@expo/vector-icons';
 
 import { COLORS, FONTS, SIZES, assets } from '../../constants';
-const user = "ketema"
 const HomeHeader = ({ onSearch }) => {
+
+  const authContext = useContext(AuthContext)
+  const { isUserAuthenticated, logout } = authContext
   const navigation = useNavigation();
+
+  const handleLogin = () => {
+      if (isUserAuthenticated){
+        logout()
+        navigation.navigate("Login")
+      }
+      else {
+        navigation.navigate("Login")
+      }
+
+  };
 
   return (
     <View
@@ -30,7 +44,7 @@ const HomeHeader = ({ onSearch }) => {
         />
         
 
-        <TouchableOpacity onPress={() => navigation.navigate("Login", { user })}>
+        <TouchableOpacity onPress={() => handleLogin()}>
           <View style={{ width: 45, height: 45 }} >
             <Image
               source={assets.person01}

@@ -1,28 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, Image, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, FlatList, Text, Image, TouchableOpacity, StyleSheet, AsyncStorage, ActivityIndicator } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, assets } from '../../constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default UserProfile = ({ navigation }) => {
-  const [user, setUser] = useState({
-    name: 'Ketema',
-    profile_picture: 'assets/images/person01.png',
-    email: 'kgirma363@gmail.com',
-  });
+import { COLORS, SIZES, assets } from '../../constants';
+import authContext from '../../context/auth/authContext';
+
+export default UserProfile = () => {
+  const navigation = useNavigation()
+  const AuthContext = useContext(authContext)
+  const { user, logout, isUserAuthenticated, loadUser } = AuthContext
+  const [currentUser, setUser] = useState(null)
+
+  const handleLogout = () => {
+    logout();
+    navigation.navigate("Home")
+  }
+  // const [user, setUser] = useState({
+  //   name: 'Ketema',
+  //   profile_picture: 'assets/images/person01.png',
+  //   email: 'kgirma363@gmail.com',
+  // });
 
   useEffect(() => {
-    const getUser = async () => {
-      const userData = await AsyncStorage.getItem('userData');
-      setUser(JSON.parse(userData));
+    if (!isUserAuthenticated) {
+      navigation.navigate("Login")
+    } else {
+      loadUser().then(() => {
+        setUser(user);
+      });
     }
-    getUser();
-  }, [])
+  }, []);
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('userData');
-    navigation.navigate('Auth');
-  };
+  if (!currentUser) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={{ marginTop: 10, fontSize: 18 }}>Loading...</Text>
+      </View>
+    )
+  }
+
 
   return (
     <View style={styles.container}>
@@ -36,10 +56,12 @@ export default UserProfile = ({ navigation }) => {
             <MaterialCommunityIcons name="account-edit-outline" size={24} color="black" />
           </View>
         </View>
-        <View style={styles.userInfo}>
-          <Text style={styles.nameText}>Ohana Ketema</Text>
-          <Text style={styles.emailText}>kgirma363@gmail.com</Text>
-        </View>
+        {currentUser &&
+          <View style={styles.userInfo}>
+            <Text style={styles.nameText}>{currentUser.name}</Text>
+            <Text style={styles.emailText}>{currentUser.email}</Text>
+          </View>
+        }
         <TouchableOpacity onPress={handleLogout}>
           <Ionicons name="ios-log-out" size={24} color="#777" style={styles.logoutButton} />
         </TouchableOpacity>
@@ -47,19 +69,19 @@ export default UserProfile = ({ navigation }) => {
       <View style={styles.orderContainer}>
         <View style={styles.orderHistory}>
           <Text style={styles.orderHistoryText}>Order History</Text>
-            <FlatList
-              data={[{ orderNumber: "12", date: "1/19/2023", total: 234 }]}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => navigate('OrderDetails', { order: item })}>
-                  <View style={styles.orderSubContainer}>
-                    <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
-                    <Text style={styles.orderDate}>Date: {item.date}</Text>
-                    <Text style={styles.orderTotal}> Total: {item.total}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item.orderNumber}
-            />
+          <FlatList
+            data={[{ orderNumber: "12", date: "1/19/2023", total: 234 }]}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => navigate('OrderDetails', { order: item })}>
+                <View style={styles.orderSubContainer}>
+                  <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
+                  <Text style={styles.orderDate}>Date: {item.date}</Text>
+                  <Text style={styles.orderTotal}> Total: {item.total}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.orderNumber}
+          />
         </View>
       </View>
     </View>
