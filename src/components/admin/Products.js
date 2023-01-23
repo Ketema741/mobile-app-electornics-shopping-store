@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, SafeAreaView, FlatList } from "react-native";
 
 import FocusedStatusBar from '../layouts/FocusedStatusBar'
@@ -12,9 +12,15 @@ import productContext from "../../context/product/productContext";
 
 const Products = () => {
   const ProductContext = useContext(productContext)
-  const { items } = ProductContext;
+  const { items, getItems } = ProductContext;
 
   const [itemData, setData] = useState(items);
+
+  useEffect(async () => { 
+    await getItems()
+    setData(items)
+  }, [])
+
 
   const handleSearch = (value) => {
     if (value.length === 0) {
@@ -31,10 +37,7 @@ const Products = () => {
       setData(filteredData);
     }
   };
-
-  const handleDelete = (id) => {
-    setData(items.filter(item => item.id !== id))
-  }
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -42,8 +45,8 @@ const Products = () => {
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={itemData}
-            renderItem={({ item }) => <ProductItem handleDelete={handleDelete} data={item} />}
+            data={items}
+            renderItem={({ item }) => <ProductItem data={item} />}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<AdminHeader onSearch={handleSearch} />}

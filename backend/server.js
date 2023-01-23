@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname + 'public')));
  
 app.use(
   cors({
-    origin: "http://10.4.104.149:4420",
+    origin: "http://10.4.112.184:4420",
   }) 
 )
  

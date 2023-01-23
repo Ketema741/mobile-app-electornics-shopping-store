@@ -26,7 +26,7 @@ const initialState = {
 }
 
 const ProductState = (props) => {
-    const localhost = '10.4.104.149'
+    const localhost = '10.4.112.184'
     const [state, dispatch] = useReducer(productReducer, initialState);
     const [cart, setCart] = useState([])
 
@@ -113,8 +113,8 @@ const ProductState = (props) => {
             console.log(res);
         } catch (error) {
             let payload = null;
-            if (err.response && err.response.data) {
-                payload = err.response.data;
+            if (error.response && error.response.data) {
+                payload = error.response.data;
             }
             dispatch({
                 type: ITEM_ERROR,
@@ -136,10 +136,13 @@ const ProductState = (props) => {
                 type: DELETE_ITEM,
                 payload: _id,
             });
+            Alert.alert('item removed successfully')
         } catch (error) {
+            Alert.alert('not item removed successfully')
+
             let payload = null;
-            if (err.response && err.response.data) {
-                payload = err.response.data;
+            if (error.response && error.response.data) {
+                payload = error.response.data;
             }
             dispatch({
                 type: ITEM_ERROR,
@@ -164,8 +167,8 @@ const ProductState = (props) => {
             });
         } catch (error) {
             let payload = null;
-            if (err.response && err.response.data) {
-                payload = err.response.data;
+            if (error.response && error.response.data) {
+                payload = error.response.data;
             }
             dispatch({
                 type: ITEM_ERROR,
@@ -197,10 +200,10 @@ const ProductState = (props) => {
     // add to cart
     const addToCart = (item) => {
         // Update cart item quantity if already in cart
-        if (cart.some((cartItem) => cartItem.id === item.id)) {
+        if (cart.some((cartItem) => cartItem._id === item._id)) {
             setCart((cart) =>
                 cart.map((cartItem) =>
-                    cartItem.id === item.id
+                    cartItem._id === item._id
                         ? {
                             ...cartItem,
                             quantity: cartItem.quantity + 1
@@ -224,10 +227,10 @@ const ProductState = (props) => {
 
 
 
-    const removeFromCart = (id) => {
+    const removeFromCart = (_id) => {
         setCart((cart) =>
             cart.map((cartItem) =>
-                cartItem.id === id && cartItem.quantity != 1
+                cartItem._id === _id && cartItem.quantity != 1
                     ? {
                         ...cartItem,
                         quantity: cartItem.quantity - 1
@@ -237,9 +240,9 @@ const ProductState = (props) => {
         );
     }
 
-    const deleteCartItem = (id) => {
+    const deleteCartItem = (_id) => {
         setCart((cart) =>
-            cart.filter((cartItem) => cartItem.id != id)
+            cart.filter((cartItem) => cartItem._id != _id)
         );
     }
 

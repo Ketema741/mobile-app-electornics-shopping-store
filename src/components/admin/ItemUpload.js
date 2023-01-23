@@ -26,13 +26,6 @@ export default ItemUpload = ({ route }) => {
 
 
 
-
-    useEffect(() => {
-        route.params.data ? setItem(route.params.data) : {};
-        console.log(itemData.name)
-        // console.log(route.params.data.name)
-    }, [route.params.data])
-
     const ProductContext = useContext(productContext)
     const { uploadItem } = ProductContext
 

@@ -6,7 +6,10 @@ import { COLORS, SIZES, FONTS } from "../../constants";
 
 
 const DetailsDesc = ({ data }) => {
-  const [text, setText] = useState(data.description.slice(0, 100));
+  const [text, setText] = useState('');
+  if (data.description) {
+    setText(data.description.slice(0, 100))
+  }
   const [readMore, setReadMore] = useState(false);
 
   return (
@@ -40,12 +43,12 @@ const DetailsDesc = ({ data }) => {
           Description
         </Text>
         <View
-          style = {{
+          style={{
             marginTop: SIZES.base,
           }}
         >
           <Text
-            style = {{
+            style={{
               color: COLORS.secondary,
               fontSize: SIZES.small,
               fontFamily: FONTS.regular,
@@ -54,7 +57,7 @@ const DetailsDesc = ({ data }) => {
           >
             {text}
             {!readMore && "..."}
-            <Text
+            <Text 
               style={{
                 color: COLORS.primary,
                 fontSize: SIZES.small,

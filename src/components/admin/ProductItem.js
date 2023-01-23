@@ -1,17 +1,24 @@
 import { View, Image } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigation } from "@react-navigation/native";
 
 import { EditButton, DeleteButton } from '../layouts/Button';
 import { COLORS, SIZES, SHADOWS, assets } from '../../constants';
 import { SubInfo, EthPrice, NFTTitle } from '../productDetail/SubInfo';
 
+import ProductContext from '../../context/product/productContext';
 
-const ProductItem = ({ data, handleDelete }) => {
-  
+
+
+const ProductItem = ({ data }) => {
+  const productContext = useContext(ProductContext)
+
+  const { deleteItem } = productContext
   const navigation = useNavigation();
-  const removeItem = () => {
-    handleDelete(data.id)
+  
+  const removeItem = async () => {
+    await deleteItem(data._id)
+
     console.log('remove');
   } 
  
@@ -32,8 +39,8 @@ const ProductItem = ({ data, handleDelete }) => {
         }}
       >
         <Image
-          source={data.image}
-          resizeMode="cover"
+          source={{ uri: data.url }}
+          resizeMode="contain"
           style={{
             width: "100%",
             height: "100%",

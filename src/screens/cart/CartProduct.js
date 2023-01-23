@@ -19,21 +19,21 @@ export default CartProduct = ({ product }) => {
         addToCart(product)
     }
     const handleMinus = () => {
-        removeFromCart(product.id)
+        removeFromCart(product._id)
     }
 
     const hanldeDelete = () => {
-        deleteCartItem(product.id)
+        deleteCartItem(product._id)
     }
     return (
         <TouchableOpacity
-            key={product.id}
+            key={product._id}
             onPress={() => navigation.navigate('Details', { data: product })}
             style={styles.container}
         >
 
             <View style={styles.productImageContainer}>
-                <Image source={product.image} style={styles.productImage} />
+                <Image source={{uri:product.url}} style={styles.productImage} />
             </View>
 
             <View style={styles.ProductDetialContainer}>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     productImage: {
         width: '100%',
         height: '100%',
-        resizeMode: 'contain',
+        resizeMode: 'cover',
     },
 
     ProductDetialContainer: {

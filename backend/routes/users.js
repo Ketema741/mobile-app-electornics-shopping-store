@@ -211,16 +211,7 @@ cloudinary.config({
 });
 
 
-router.post("/image", async (req, res) => {
-  const { public_id } = req.body;
-  try {
-    await cloudinary.uploader.destroy(public_id);
-    res.json({ msg: "Image removed" });
-  } catch (err) {
-    console.error(err.message);
-    res.status(400).send("server Error");
-  }
-});
+
 
 
 module.exports = router;

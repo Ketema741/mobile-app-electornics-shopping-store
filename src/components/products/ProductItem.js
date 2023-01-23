@@ -5,21 +5,20 @@ import { useNavigation } from "@react-navigation/native";
 import { CircleButton, RectButton } from '../layouts/Button';
 import { COLORS, SIZES, SHADOWS, assets } from '../../constants';
 import { SubInfo, EthPrice, NFTTitle } from '../productDetail/SubInfo';
-import ProductContext from './../../context/product/productContext';
+import productContext from './../../context/product/productContext';
 
 
 const ProductItem = ({ data }) => {
   const navigation = useNavigation();
+  const ProductContext = useContext(productContext)
+  const { item, getItem } = ProductContext
 
-  const productContext =useContext(ProductContext)
-  const { item, getItem } = productContext;
 
-  const handlePress = () => {
-    getItem(data._id)
-    
-    navigation.navigate("Details")
-
+  const handlePress = async () => {
+    await getItem(data._id)
+    navigation.navigate("Details", { data: item })
   }
+
   return (
     <View
       style={{

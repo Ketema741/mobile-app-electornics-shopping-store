@@ -11,7 +11,7 @@ import {
   CLEAR_ERRORS,
 } from "../Types";
 
-import { setAuthToken, removeToken } from "../../utils/authToken";
+import { setAuthToken, removeAuthToken } from "../../utils/authToken";
 const authReducer = (state, action) => {
   switch (action.type) {
     case USER_LOADED:
@@ -41,7 +41,7 @@ const authReducer = (state, action) => {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      removeToken()
+      removeAuthToken()
       return {
         ...state,
         token: null,

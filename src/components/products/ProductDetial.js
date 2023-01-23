@@ -13,7 +13,9 @@ const ProductDetial = () => {
 
 
   useEffect(() => {
-    if(item) setImageUrl(item.url);
+    if (item) {
+      setImageUrl(item.url);
+    }
   }, [item]);
 
 
@@ -29,17 +31,15 @@ const ProductDetial = () => {
       }}
       key={item._id}
     >
-      <Image
-        source={{ uri: item.url }}
-        resizeMode="contain"
-        style={{ width: 48, height: 48 }}
-      />
+
       {imageUrl &&
         <Image
           source={{ uri: imageUrl }}
           resizeMode="contain"
+          onError={() => console.log('Error')}
           style={{ width: 48, height: 48 }}
-        />}
+        />
+      }
 
       <View
         style={{

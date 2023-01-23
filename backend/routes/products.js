@@ -151,14 +151,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-const deleteImage = async (productImages) => {
-  if (productImages.length >= 1) {
-    for (const image of productImages) {
-      const res = await cloudinary.uploader.destroy(image.public_id);
-      console.log(res)
-    }
-  }
-}
+
 
 cloudinary.config({
   cloud_name: config.get("cloud_name"),
@@ -167,15 +160,6 @@ cloudinary.config({
 });
 
 
-router.post("/image", async (req, res) => {
-  const { public_id } = req.body;
-  try {
-    await cloudinary.uploader.destroy(public_id);
-    res.status(200).send();
-  } catch (err) {
-    console.error(err.message);
-    res.status(400).send("server Error");
-  }
-});
+
 
 module.exports = router; 

@@ -18,7 +18,7 @@ import {
 } from "../Types";
 
 const AuthState = (props) => {
-  const localhost = "10.4.104.149"
+  const localhost = "10.4.112.184"
   const initialState = {
     user: null,
     currentUser: null,
