@@ -8,16 +8,26 @@ import AdminHeader from "../layouts/AdminHeader";
 import ProductItem from "./ProductItem";
 
 import productContext from "../../context/product/productContext";
-
+import { useNavigation } from '@react-navigation/native';
+import authContext from "../../context/auth/authContext";
 
 const Products = () => {
+  const navigation = useNavigation();
+  const AuthContext = useContext(authContext);
+  const { isUserAuthenticated, user } = AuthContext;
   const ProductContext = useContext(productContext)
   const { items, getItems } = ProductContext;
 
   const [itemData, setData] = useState(items);
 
-  useEffect(async () => { 
-    await getItems()
+  useEffect(() => {
+    if (!isUserAuthenticated && user && user.type != 'admin') {
+      navigation.navigate('Login');
+    }
+  }, [isUserAuthenticated, navigation, user]);
+
+  useEffect(() => {
+    getItems()
     setData(items)
   }, [])
 
@@ -37,7 +47,7 @@ const Products = () => {
       setData(filteredData);
     }
   };
-  
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -47,7 +57,7 @@ const Products = () => {
           <FlatList
             data={items}
             renderItem={({ item }) => <ProductItem data={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<AdminHeader onSearch={handleSearch} />}
           />

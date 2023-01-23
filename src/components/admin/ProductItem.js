@@ -13,15 +13,20 @@ import ProductContext from '../../context/product/productContext';
 const ProductItem = ({ data }) => {
   const productContext = useContext(ProductContext)
 
-  const { deleteItem } = productContext
+  const { deleteItem, getItem } = productContext
   const navigation = useNavigation();
-  
+
   const removeItem = async () => {
     await deleteItem(data._id)
 
     console.log('remove');
-  } 
- 
+  }
+
+  const editItem = async () => {
+    await getItem(data._id)
+    navigation.navigate("EditItem")
+  }
+
   return (
     <View
       style={{
@@ -49,7 +54,7 @@ const ProductItem = ({ data }) => {
           }}
         />
       </View>
-      <EditButton  handlePress={() => navigation.navigate("ItemUpload", { data })} imgUrl={assets.heart} right={10} top={10} />
+      <EditButton handlePress={() => editItem()} imgUrl={assets.heart} right={10} top={10} />
 
       <SubInfo />
       <View style={{ width: "100%", padding: SIZES.font }}>

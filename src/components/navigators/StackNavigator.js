@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Details from "../../screens/Details";
 import ItemUpload from "../admin/ItemUpload";
+import EditItem from "../admin/EditItem";
 
 import Home from "../../screens/Home";
 import Cart from '../../screens/cart/Cart'
@@ -29,8 +30,11 @@ const StackNavigator = () => {
 
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="ItemUpload" component={ItemUpload} />
+
             <Stack.Screen name="Admin" component={Admin} />
+            <Stack.Screen name="ItemUpload" component={ItemUpload} />
+            <Stack.Screen name="EditItem" component={EditItem} />
+
             <Stack.Screen name="UserProfile" component={UserProfile} />
         </Stack.Navigator>
     );

@@ -12,36 +12,31 @@ export default UserProfile = () => {
   const navigation = useNavigation()
   const AuthContext = useContext(authContext)
   const { user, logout, isUserAuthenticated, loadUser } = AuthContext
-  const [currentUser, setUser] = useState(null)
+  const [currentUser, setUser] = useState(user)
 
   const handleLogout = () => {
     logout();
     navigation.navigate("Home")
   }
-  // const [user, setUser] = useState({
-  //   name: 'Ketema',
-  //   profile_picture: 'assets/images/person01.png',
-  //   email: 'kgirma363@gmail.com',
-  // });
 
   useEffect(() => {
-    if (!isUserAuthenticated) {
-      navigation.navigate("Login")
-    } else {
-      loadUser().then(() => {
-        setUser(user);
-      });
+    const isToken = async () => await AsyncStorage.getItem('token');
+    const token = isToken()
+    if (token) {
+      loadUser()
+        .then(() => {
+          setUser(user);
+        });
+      setUser(user);
     }
-  }, []);
+  }, [user]);
 
-  if (!currentUser) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={{ marginTop: 10, fontSize: 18 }}>Loading...</Text>
-      </View>
-    )
-  }
+  const isToken = async () => await AsyncStorage.getItem('token');
+  const token = isToken()
+  if (!isUserAuthenticated || !token ||!user) {
+    navigation.navigate("Login")
+  } 
+
 
 
   return (

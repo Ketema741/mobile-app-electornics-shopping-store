@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Image, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
@@ -11,23 +11,10 @@ import { firebase, getDownloadURL, getStorage, ref } from '../../../firebase';
 
 import HomeHeader from '../layouts/HomeHeader';
 import { COLORS, SIZES } from '../../constants';
-import productContext from './../../context/product/productContext';
 
 
-export default ItemUpload = ({ route }) => {
-    const initialState = {
-        name: '',
-        title: '',
-        description: '',
-        prince: '',
-    }
+export default ItemUpload = () => {
     const navigation = useNavigation()
-    const [itemData, setItem] = useState(initialState)
-
-
-
-    const ProductContext = useContext(productContext)
-    const { uploadItem } = ProductContext
 
     const [hasGalleryPermission, setGalleryPermission] = useState(null)
     const [image, setImage] = useState(null)
@@ -56,7 +43,7 @@ export default ItemUpload = ({ route }) => {
         if (hasGalleryPermission === false) {
             return <Text>No access to internal storage!</Text>
         }
-    } 
+    }
 
 
     return (
@@ -64,7 +51,7 @@ export default ItemUpload = ({ route }) => {
             <HomeHeader />
 
             <Formik
-                initialValues={{ name: itemData.name, title: itemData.title, description: itemData.description, price: itemData.price }}
+                initialValues={{ name:'', title: '', description: '', price: '' }}
                 validationSchema={yup.object().shape({
                     name: yup.string().required('Item name is required'),
                     title: yup.string().required('Item title is required'),

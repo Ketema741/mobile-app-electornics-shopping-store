@@ -165,7 +165,12 @@ const ProductState = (props) => {
                 type: UPDATE_ITEM,
                 payload: res.data,
             });
+
+            Alert.alert('Item Updated successfully')
+
         } catch (error) {
+            Alert.alert('Item Not Updated successfully')
+
             let payload = null;
             if (error.response && error.response.data) {
                 payload = error.response.data;
